@@ -1,0 +1,27 @@
+@startuml
+actor User
+participant "Library System" as LS
+
+User -> LS: Open the system
+User -> LS: Click "Login" button
+User -> LS: Enter username and password
+User -> LS: Click "Submit" button
+alt Valid Credentials
+    LS --> User: Redirect to the system
+else Incorrect Password
+    LS --> User: Display "Incorrect password" error
+    User -> LS: Re-enter correct password
+    User -> LS: Click "Submit" button
+    LS --> User: Redirect to the system
+else Forgot Password
+    User -> LS: Click "Forgot Password" link
+    LS --> User: Prompt to enter registered email
+    User -> LS: Enter registered email
+    LS --> User: Send password reset email
+    User -> LS: Click reset link and reset password
+    LS --> User: Confirm password reset
+else Email Does Not Exist
+    LS --> User: Display "Email address does not exist" error
+    User -> LS: Click "Sign Up" button or try another account
+end
+@enduml

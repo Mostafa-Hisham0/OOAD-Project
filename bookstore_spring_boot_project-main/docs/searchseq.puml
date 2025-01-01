@@ -1,0 +1,18 @@
+@startuml
+actor User
+participant "Library System" as LS
+
+User -> LS: Open the library system
+User -> LS: Navigate to "Book Search" page
+
+User -> LS: Click "Search" button
+User -> LS: Enter name of the book
+alt Books Found
+    LS --> User: Display list of matching books
+    User -> LS: Select a book from search results
+    LS --> User: Show book details
+else No Matching Results
+    LS --> User: Display "No matching books found"
+    User -> LS: Modify search criteria and retry
+end
+@enduml

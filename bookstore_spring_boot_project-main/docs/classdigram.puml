@@ -1,0 +1,73 @@
+@startuml
+
+class Users {
+    - id : String
+    - name : String
+    - email : String
+    - password : String
+    + login() : void
+}
+
+class User{
+    + signup() : void
+    + reserveBook(bookId : String) : void
+    + returnBook(bookId : String) : void
+    + renewBook(bookId : String) : void
+    + viewHistory() : List<Book>
+}
+
+class Admin {
+    + addBook(book : Book) : void
+    + removeBook(bookId : String) : void
+    + updateBook(bookId : String, updatedBook : Book) : void
+    + viewUserHistory(userId : String) : History
+    + updateFine(fine : Fine, newFineAmount : Double) : void
+}
+
+class Book {
+    - title : String
+    - author : String
+    - genre : String
+    - identifier : String
+    - isAvailable : Boolean
+}
+
+class History {
+    - userId : String
+    - borrowedBooks : List<Book>
+    - reservedBooks : List<Book>
+    - returnDates : Map<Book, Date>
+    + viewHistory(userId : String) : List<Book>
+    + addBorrowedBook(book : Book, returnDate : Date) : void
+    + addReservedBook(book : Book) : void
+}
+class Fine {
+    - fineRatePerDay : Double
+    - overdueDays : int
+    - totalFine : Double
+    + calculateFine(overdueDays : int) : Double
+    + getFineDetails() : String
+    + updateFineAmount(newFineAmount : Double) : void
+}
+class Search {
+    + searchByTitle(title : String) : List<Book>
+    + searchByAuthor(author : String) : List<Book>
+    + searchByGenre(genre : String) : List<Book>
+    + searchByIdentifier(identifier : String) : Book
+}
+
+Users <|-- User
+Users <|-- Admin
+User --> Search : uses
+Admin --> "0..*" Book : manages
+
+Admin --> Fine : updates
+Admin --> History : views
+User --> "1" History : has
+History --> "0..*" Book : contains
+Search --> "0..*" Book : returns
+User --> Fine : pays
+Fine --> "1" Book : related
+
+
+@enduml
